@@ -13,9 +13,9 @@ app.use(dbMiddleware); // Injecter les middlewares globaux ici
 // Import des routes de vos APIs
 const clothesRoutes = require('./clothes-api/routes/clothesRoutes');
 const assignmentRoutes = require('./clothes-assignment-api/routes/clothesAssignmentRoutes');
-const commentRoutes = require('./comment-api/routes/commentRoutes');
+const commentRoutes = require('./Comment-api/routes/commentRoutes');
 const dailyNoteRoutes = require('./DailyNote/routes/dailyNoteRoutes');
-const dailyViolationRoutes = require('./dailyViolation-api/routes/dailyViolationRoutes');
+const dailyViolationRoutes = require('./DailyViolation-api/routes/dailyViolationRoutes');
 const disponibiliteRoutes = require('./Disponibiltes-api/routes/disponibiliteRoutes');
 const employeRoutes = require('./Employes-api/routes/EmployeRoutes');
 const eventsRoutes = require('./events-api/routes/eventRoutes');
@@ -59,7 +59,7 @@ app.use('/api/timecards', timeCardRoutes);
 app.use('/api/vanAssignments', vanAssignmentRoutes);
 app.use('/api/warnings', warningRoutes);
 app.use('/api/download', download);
-app.use('/api/ScroceCrd', ScroceCrd);
+app.use('/api/ScroceCrd', download);
 
 // Démarrer le serveur sur un port unique
 const PORT = process.env.PORT || 3000;
