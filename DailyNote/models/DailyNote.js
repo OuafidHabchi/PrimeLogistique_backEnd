@@ -10,8 +10,8 @@ const dailyNoteSchema = new mongoose.Schema({
   },
   assignedVanNameForToday: { type: String, required: true },
   lu: { type: Boolean, default: false },
-  today: { type: String, default: () => new Date().toISOString().split('T')[0] }, // Par défaut, la date d'aujourd'hui
-  time: { type: String, default: () => new Date().toLocaleTimeString() }, // Par défaut, l'heure locale
+  today: { type: String }, // Par défaut, la date d'aujourd'hui
+  time: { type: String, }, // Par défaut, l'heure locale
   photo: { type: Buffer },
 });
 

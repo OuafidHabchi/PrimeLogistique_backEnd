@@ -21,3 +21,10 @@
 2025-01-07 15:33:00 [ERROR]: Erreur lors de l'initialisation des modèles nécessaires : Schéma invalide pour le modèle "DailyNote".
 2025-01-08 11:02:34 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.
 2025-01-08 11:02:35 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.
+2025-01-08 12:01:18 [ERROR]: Erreur : dsp_code est requis.
+2025-01-08 12:03:11 [ERROR]: Erreur : dsp_code est requis.
+2025-01-08 12:03:29 [ERROR]: Erreur : dsp_code est requis.
+2025-01-08 12:03:35 [ERROR]: Erreur : dsp_code est requis.
+2025-01-08 12:10:30 [ERROR]: Erreur : dsp_code est requis.
+2025-01-08 12:10:38 [ERROR]: Erreur : dsp_code est requis.
+2025-01-08 12:20:19 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.

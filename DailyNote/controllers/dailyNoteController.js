@@ -3,33 +3,50 @@ const { sendPushNotification } = require('../../utils/notifications');
 // Créer une nouvelle DailyNote
 exports.createDailyNote = async (req, res) => {
     try {
+        console.log("Request received at createDailyNote"); // Log initial
+
         const DailyNote = req.connection.models.DailyNote;
+
+        console.log("Parsing request body...");
         const dailyNoteData = {
             problemDescription: req.body.problemDescription,
             problemType: req.body.problemType,
             employee: JSON.parse(req.body.employee),
             assignedVanNameForToday: req.body.assignedVanNameForToday,
-            today: req.body.today,
+            today: Array.isArray(req.body.today) ? req.body.today[0] : req.body.today, // Convertit un tableau en chaîne si nécessaire
+            time: req.body.time,
         };
 
+        console.log("Parsed dailyNoteData:", dailyNoteData);
+
         if (req.file) {
+            console.log("File detected, adding photo to dailyNoteData...");
             dailyNoteData.photo = req.file.buffer;
+        } else {
+            console.log("No file provided in the request.");
         }
 
         const dailyNote = new DailyNote(dailyNoteData);
+        console.log("DailyNote instance created:", dailyNote);
+
         await dailyNote.save();
+        console.log("DailyNote saved successfully:", dailyNote);
 
         res.status(201).send(dailyNote);
 
         if (req.body.expoPushToken) {
+            console.log("Sending push notification...");
             const notificationTitle = "New Daily Note Created";
             const notificationBody = `A new note has been created: "${req.body.problemDescription}". Check it now!`;
             await sendPushNotification(req.body.expoPushToken, notificationTitle, notificationBody);
+            console.log("Push notification sent.");
         }
     } catch (error) {
+        console.error("Error in createDailyNote:", error.message);
         res.status(400).send({ error: error.message });
     }
 };
+
 
 // Obtenir toutes les DailyNotes
 exports.getAllDailyNotes = async (req, res) => {
