@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const powerBankController = require('../controllers/powerBankController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['PowerBank'];
+  logger.debug(`Middleware powerBankRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes powerbanks
+router.use(dbMiddleware);
 
 // Créer un nouveau powerbank
 router.post('/powerbanks', powerBankController.createPowerBank);
@@ -19,6 +31,5 @@ router.delete('/powerbanks/:id', powerBankController.deletePowerBank);
 
 // Nouvelle route pour les powerbanks fonctionnels
 router.get('/powerbanks/functional/all', powerBankController.getFunctionalPowerBanks);
-
 
 module.exports = router;

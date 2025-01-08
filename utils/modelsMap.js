@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const logger = require('./logger');
 
 // Importation des modèles
 const Clothes = require('../clothes-api/models/Clothes');
@@ -11,8 +12,8 @@ const Event = require('../events-api/models/eventModel');
 const ExtraRoad = require('../ExtraRoad-api/models/Road');
 const Vehicle = require('../Fleet-api/models/vehicle');
 const InventoryItem = require('../Inventory-api-complet/models/InventoryItem');
-// const Conversation = require('../Messenger-api/models/conversationModel');
-// const Message = require('../Messenger-api/models/messageModel');
+const Conversation = require('../Messenger-api/models/conversationModel');
+const Message = require('../Messenger-api/models/messageModel');
 const Phone = require('../Phones-api/models/Phone');
 const PowerBank = require('../PowerBank-api/models/PowerBank');
 const Procedure = require('../Procedures-api/models/Procedure');
@@ -37,8 +38,8 @@ const modelsMap = {
   ExtraRoad,
   Vehicle,
   InventoryItem,
-  // Conversation,
-  // Message,
+  Conversation,
+  Message,
   Phone,
   PowerBank,
   Procedure,
@@ -58,18 +59,18 @@ const modelsMap = {
 const validateModelsMap = () => {
   for (const [modelName, model] of Object.entries(modelsMap)) {
     if (!model || !(model instanceof mongoose.Schema || typeof model.schema === 'object')) {
-      console.error(`Erreur : Le modèle "${modelName}" est invalide ou manquant.`);
+      logger.error(`Erreur : Le modèle "${modelName}" est invalide ou manquant.`);
       throw new Error(`Modèle "${modelName}" invalide ou mal configuré.`);
     }
   }
-  console.log('Tous les modèles ont été validés avec succès.');
+  logger.debug('Tous les modèles ont été validés avec succès.');
 };
 
 // Valide les modèles au moment du chargement
 try {
   validateModelsMap();
 } catch (error) {
-  console.error('Erreur lors de la validation des modèles :', error.message);
+  logger.error('Erreur lors de la validation des modèles :', error.message);
   process.exit(1); // Arrête l'application si les modèles sont invalides
 }
 

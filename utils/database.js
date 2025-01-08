@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const logger = require('./logger');
 
 // Cache des connexions existantes
 const connections = {};
@@ -35,62 +36,64 @@ const getDatabaseConnection = async (dsp_code) => {
 
   // Initialiser une nouvelle connexion si nécessaire
   const uri = `mongodb+srv://wafid:wafid@ouafid.aihn5iq.mongodb.net/${dbName}`;
-  let retries = 3; // Nombre de tentatives en cas d'échec
+  const poolSize = process.env.NODE_ENV === 'production' ? 50 : 10; // Taille du pool
 
-  while (retries > 0) {
-    try {
-      // Après : Dynamisation de maxPoolSize
-      const poolSize = process.env.NODE_ENV === 'production' ? 50 : 10; // Plus élevé en production
-      const connection = mongoose.createConnection(uri, {
-        maxPoolSize: poolSize,
-        serverSelectionTimeoutMS: 30000, // Timeout réduit
-      });
+  try {
+    const connection = mongoose.createConnection(uri, {
+      maxPoolSize: poolSize,
+      serverSelectionTimeoutMS: 30000, // Timeout de sélection
+    });
 
+    // Timeout pour les connexions inactives
+    connection.on('connected', () => {
+      logger.debug(`Connexion établie à la base : ${dbName}`);
+    });
 
-      // Gestion des événements de connexion
-      connection.on('connected', () => {
-      });
+    connection.on('disconnected', () => {
+      logger.warn(`Déconnexion automatique de la base : ${dbName}`);
+    });
 
-      connection.on('error', (err) => {
-        console.error(`Erreur de connexion à la base de données (${dbName}) :`, err.message);
-        delete connections[dbName]; // Supprimer la connexion du cache en cas d'erreur
-      });
+    connection.on('error', (err) => {
+      logger.error(`Erreur de connexion (${dbName}) :`, err.message);
+      delete connections[dbName];
+    });
 
-      connection.on('disconnected', () => {
-        console.warn(`Déconnexion de la base de données (${dbName}).`);
-      });
-
-      // Désactiver les commandes en mémoire tampon pour éviter des comportements inattendus
-      connection.set('bufferCommands', false);
-
-      // Ajouter la connexion au cache
-      connections[dbName] = connection;
-
-      return connection;
-    } catch (error) {
-      console.error(`Erreur lors de la connexion à ${dbName} (${retries - 1} tentatives restantes) :`, error.message);
-      retries -= 1;
-
-      if (retries === 0) {
-        throw new Error(`Impossible d'établir une connexion à ${dbName} après plusieurs tentatives : ${error.message}`);
+    // Nettoyage automatique après 10 minutes d'inactivité
+    setTimeout(() => {
+      if (connection.readyState === 1) {
+        connection.close().then(() => {
+          logger.debug(`Connexion fermée pour inactivité (${dbName}).`);
+        });
+        delete connections[dbName];
       }
-    }
+    }, 10 * 60 * 1000); // 10 minutes
+
+    // Désactiver les commandes en mémoire tampon
+    connection.set('bufferCommands', false);
+
+    // Ajouter au cache
+    connections[dbName] = connection;
+
+    return connection;
+  } catch (error) {
+    logger.error(`Erreur lors de la connexion à ${dbName} :`, error.message);
+    throw new Error(`Connexion à ${dbName} échouée : ${error.message}`);
   }
 };
 
-// Nettoyage des connexions en cas d'arrêt du serveur
+// Nettoyage des connexions à la fin
 process.on('SIGINT', async () => {
-  console.log('Fermeture des connexions MongoDB...');
+  logger.debug('Fermeture des connexions MongoDB...');
   const closePromises = Object.values(connections).map(async (conn) => {
     try {
       await conn.close();
-      console.log(`Connexion fermée proprement pour la base : ${conn.name}`);
+      logger.debug(`Connexion fermée proprement pour la base : ${conn.name}`);
     } catch (err) {
-      console.error(`Erreur lors de la fermeture de la connexion : ${conn.name}`, err.message);
+      logger.error(`Erreur lors de la fermeture de la connexion : ${conn.name}`, err.message);
     }
   });
   await Promise.all(closePromises);
-  console.log('Toutes les connexions MongoDB ont été fermées.');
+  logger.debug('Toutes les connexions MongoDB ont été fermées.');
   process.exit(0);
 });
 

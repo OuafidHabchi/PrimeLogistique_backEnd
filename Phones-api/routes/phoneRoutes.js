@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const phoneController = require('../controllers/phoneController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Phone'];
+  logger.debug(`Middleware phoneRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes phones
+router.use(dbMiddleware);
 
 // Créer un nouveau phone
 router.post('/phones/create', phoneController.createPhone);
@@ -19,6 +31,5 @@ router.delete('/phones/:id', phoneController.deletePhone);
 
 // Nouvelle route pour les téléphones fonctionnels
 router.get('/phones/functional/all', phoneController.getFunctionalPhones);
-
 
 module.exports = router;

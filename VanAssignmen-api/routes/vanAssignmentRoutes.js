@@ -1,7 +1,19 @@
-// routes/vanAssignmentRoutes.js
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const vanAssignmentController = require('../controllers/vanAssignmentController');
+const logger = require('../../utils/logger');
+
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['VanAssignment'];
+  logger.debug(`Middleware vanAssignmentRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes van assignments
+router.use(dbMiddleware);
 
 // Route pour créer une nouvelle affectation de véhicule
 router.post('/create', vanAssignmentController.createVanAssignment);
@@ -23,6 +35,5 @@ router.get('/date/:date', vanAssignmentController.getAssignmentsByDate);
 
 // Route pour mettre à jour une affectation de véhicule by jour
 router.put('/assignments/:date/:employeeId', vanAssignmentController.updateAssignmentsByDateAndEmployee);
-
 
 module.exports = router;

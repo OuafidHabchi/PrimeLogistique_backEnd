@@ -7,8 +7,8 @@ const dbMiddleware = require('../MidleWareMessenger/middlewareMessenger');
 
 const router = express.Router();
 
-const UPLOAD_DIR = './uploads/';
-const MAX_FILE_SIZE = 150 * 1024 * 1024; // 150 MB
+const UPLOAD_DIR = path.resolve(__dirname, '../uploads'); // Correct path for the uploads directory
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 150 MB
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'video/mp4', 'video/quicktime', 'application/pdf'];
 const ALLOWED_EXTENSIONS = ['.jpeg', '.jpg', '.png', '.mp4', '.mov', '.pdf'];
 
@@ -19,10 +19,12 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log('Enregistrement dans :', UPLOAD_DIR);
     cb(null, UPLOAD_DIR);
   },
   filename: (req, file, cb) => {
     const uniqueName = `file-${Date.now()}${path.extname(file.originalname)}`;
+    console.log('Nom du fichier généré :', uniqueName);
     cb(null, uniqueName);
   },
 });
@@ -45,10 +47,13 @@ const upload = multer({
 const handleFileUpload = (req, res, next) => {
   upload.single('file')(req, res, (err) => {
     if (err instanceof multer.MulterError) {
+      console.error('Erreur Multer :', err.message);
       return res.status(400).json({ error: `Erreur Multer: ${err.message}` });
     } else if (err) {
+      console.error('Erreur fichier :', err.message);
       return res.status(400).json({ error: `Erreur fichier: ${err.message}` });
     }
+    console.log('Fichier reçu :', req.file);
     next();
   });
 };
@@ -61,6 +66,7 @@ router.post(
     try {
       await dbMiddleware(req, res, next);
     } catch (error) {
+      console.error('Erreur middleware DB :', error.message);
       return res.status(500).json({ error: 'Erreur lors de la connexion à la base de données.' });
     }
   },
@@ -78,6 +84,7 @@ router.get(
     try {
       await dbMiddleware(req, res, next);
     } catch (error) {
+      console.error('Erreur middleware DB :', error.message);
       return res.status(500).json({ error: 'Erreur lors de la connexion à la base de données.' });
     }
   },
@@ -91,6 +98,7 @@ router.post(
     try {
       await dbMiddleware(req, res, next);
     } catch (error) {
+      console.error('Erreur middleware DB :', error.message);
       return res.status(500).json({ error: 'Erreur lors de la connexion à la base de données.' });
     }
   },

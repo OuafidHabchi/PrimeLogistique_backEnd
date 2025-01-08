@@ -1,6 +1,21 @@
 const express = require('express');
 const employeController = require('../controllers/employeController');
 const router = express.Router();
+const logger = require('../../utils/logger');
+const dbMiddleware = require('../../utils/middleware'); // Import du middleware
+
+
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Employee']; // Spécifiez que le modèle "Employee" est nécessaire pour ces routes
+  logger.debug(`Middleware employeRoutes : req.requiredModels = ${req.requiredModels}`);
+
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes employe
+router.use(dbMiddleware);
 
 // Routes pour gérer les employés
 router.post('/register', employeController.registeremploye);

@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const quizController = require('../controllers/quizController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Quiz'];
+  logger.debug(`Middleware quizRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes quizzes
+router.use(dbMiddleware);
 
 // Routes CRUD
 router.post('/', quizController.createQuiz);         // Créer un quiz

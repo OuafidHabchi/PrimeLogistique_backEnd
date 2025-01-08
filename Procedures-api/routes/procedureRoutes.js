@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const procedureController = require('../controllers/procedureController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Procedure'];
+  logger.debug(`Middleware procedureRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes procedures
+router.use(dbMiddleware);
 
 // Routes CRUD
 router.get('/', procedureController.getAllProcedures); // GET toutes les procédures

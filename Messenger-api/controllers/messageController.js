@@ -1,4 +1,5 @@
 const { sendPushNotification } = require('../../utils/notifications');
+const path = require('path');
 
 // Fonction utilitaire pour valider les connexions et modèles
 const validateConnection = (connection, modelName) => {
@@ -12,9 +13,9 @@ const determineMessageContent = (file, content) => {
   if (file) {
     if (file.mimetype.startsWith('video/')) return 'Vidéo partagée';
     if (file.mimetype.startsWith('image/')) return 'Image partagée';
-    return 'Media partagé';
+    return 'Média partagé';
   }
-  return content || 'Media partagé';
+  return content || 'Média partagé';
 };
 
 // Envoi d'un message avec ou sans fichier
@@ -36,6 +37,7 @@ exports.uploadMessage = async (req, res) => {
       participants,
     });
 
+    // Générer l'URL du fichier
     const fileUrl = file ? `/uploads/${file.filename}` : null;
     console.log('URL du fichier générée :', fileUrl);
 
@@ -57,14 +59,14 @@ exports.uploadMessage = async (req, res) => {
 
     // Émettre le message via Socket.IO
     const io = req.app.get('socketio');
-    console.log('Tentative d\'émission du message via Socket.IO...');
+    console.log("Tentative d'émission du message via Socket.IO...");
     io.emit('newMessage', message);
     console.log('Message émis avec succès via Socket.IO.');
 
     res.status(201).json({ message: 'Message envoyé avec succès', data: message });
 
     // Envoi des notifications push
-    console.log('Tentative d\'envoi des notifications push...');
+    console.log("Tentative d'envoi des notifications push...");
     const notificationPromises = participants.map(async (participant) => {
       if (participant.expoPushToken && participant._id !== senderId) {
         await sendPushNotification(
@@ -78,12 +80,13 @@ exports.uploadMessage = async (req, res) => {
     await Promise.all(notificationPromises);
     console.log('Notifications push envoyées avec succès.');
   } catch (error) {
-    console.error('Erreur lors de l\'envoi du message :', error.message);
+    console.error("Erreur lors de l'envoi du message :", error.message);
     if (!res.headersSent) {
-      res.status(500).json({ error: 'Erreur lors de l\'envoi du message' });
+      res.status(500).json({ error: "Erreur lors de l'envoi du message" });
     }
   }
 };
+
 
 // Récupération des messages d'une conversation
 exports.getMessagesByConversation = async (req, res) => {

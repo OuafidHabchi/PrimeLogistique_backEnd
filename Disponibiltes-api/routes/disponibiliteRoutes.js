@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const disponibiliteController = require('../controllers/disponibiliteController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Disponibilite'];
+  logger.debug(`Middleware disponibiliteRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes disponibilites
+router.use(dbMiddleware);
 
 // Créer une disponibilité
 router.post('/disponibilites/create', disponibiliteController.createDisponibilite);

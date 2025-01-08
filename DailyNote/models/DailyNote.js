@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Définition du schéma
 const dailyNoteSchema = new mongoose.Schema({
   problemDescription: { type: String, required: true },
   problemType: { type: String, required: true },
@@ -8,18 +9,11 @@ const dailyNoteSchema = new mongoose.Schema({
     name: { type: String, required: true },
   },
   assignedVanNameForToday: { type: String, required: true },
-  lu: { type: Boolean },
-  today: { type: String },
-  time: { type: String },
+  lu: { type: Boolean, default: false },
+  today: { type: String, default: () => new Date().toISOString().split('T')[0] }, // Par défaut, la date d'aujourd'hui
+  time: { type: String, default: () => new Date().toLocaleTimeString() }, // Par défaut, l'heure locale
   photo: { type: Buffer },
 });
 
-// Middleware pour définir automatiquement l'heure locale
-dailyNoteSchema.pre('save', function (next) {
-  const now = new Date();
-  const userLocalTime = now.toLocaleTimeString();
-  this.time = userLocalTime;
-  next();
-});
-
-module.exports = { schema: dailyNoteSchema, modelName: 'DailyNote' }; // Préparation pour le système multi-DB
+// Export du schéma
+module.exports = dailyNoteSchema;

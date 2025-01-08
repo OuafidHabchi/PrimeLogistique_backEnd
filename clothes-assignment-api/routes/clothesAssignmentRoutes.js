@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const assignmentController = require('../controllers/clothesAssignmentController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['ClothesAssignment'];
+  logger.debug(`Middleware clothesAssignmentRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes assignments
+router.use(dbMiddleware);
 
 // Routes CRUD
 router.get('/assignments', assignmentController.getAllAssignments);

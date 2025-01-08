@@ -1,0 +1,23 @@
+2025-01-07 14:31:26 [ERROR]: Erreur lors de la connexion : Cannot convert undefined or null to object
+2025-01-07 14:32:29 [ERROR]: Erreur lors de la connexion : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 14:33:17 [ERROR]: Erreur lors de la connexion : Employee model is not registered in the connection.
+2025-01-07 14:33:37 [ERROR]: Erreur lors de la connexion : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 14:36:42 [ERROR]: Erreur lors de la connexion : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 14:43:54 [ERROR]: Erreur lors de la connexion : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 14:44:45 [ERROR]: Erreur lors de la connexion : Employee model is not registered in the connection.
+2025-01-07 14:47:42 [ERROR]: Erreur lors de la connexion : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 14:48:20 [ERROR]: Erreur lors de la connexion : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 14:55:45 [ERROR]: Erreur dans loginemploye : Les modèles MongoDB ne sont pas injectés dans req.connection.models.
+2025-01-07 15:01:55 [ERROR]: Erreur dans loginemploye : Le modèle "Employee" n'est pas enregistré dans la connexion.
+2025-01-07 15:31:31 [ERROR]: Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:31:31 [ERROR]: Erreur lors de l'initialisation des modèles nécessaires : Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:31:45 [ERROR]: Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:31:45 [ERROR]: Erreur lors de l'initialisation des modèles nécessaires : Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:31:47 [ERROR]: Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:31:47 [ERROR]: Erreur lors de l'initialisation des modèles nécessaires : Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:31:59 [ERROR]: Schéma invalide pour le modèle "Shift".
+2025-01-07 15:31:59 [ERROR]: Erreur lors de l'initialisation des modèles nécessaires : Schéma invalide pour le modèle "Shift".
+2025-01-07 15:33:00 [ERROR]: Schéma invalide pour le modèle "DailyNote".
+2025-01-07 15:33:00 [ERROR]: Erreur lors de l'initialisation des modèles nécessaires : Schéma invalide pour le modèle "DailyNote".
+2025-01-08 11:02:34 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.
+2025-01-08 11:02:35 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.

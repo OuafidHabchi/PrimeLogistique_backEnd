@@ -1,4 +1,5 @@
 const { sendPushNotification } = require('../../utils/notifications');
+const logger = require('../../utils/logger');
 
 
 // Inscription d'un employé
@@ -46,24 +47,34 @@ exports.registeremploye = async (req, res) => {
 // Exemple pour `loginemploye` :
 exports.loginemploye = async (req, res) => {
     try {
-        const Employe = req.connection.models.Employee; // Modèle injecté dynamiquement
-        if (!Employe) {
-            throw new Error("Employee model is not registered in the connection.");
-        }
-
-        const { email, password } = req.body;
-        const existingEmploye = await Employe.findOne({ email });
-
-        if (!existingEmploye || existingEmploye.password !== password) {
-            return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
-        }
-
-        res.status(200).json(existingEmploye);
+      if (!req.connection) {
+        throw new Error('Connexion MongoDB non injectée dans req.connection.');
+      }
+  
+      if (!req.connection.models) {
+        throw new Error('Les modèles MongoDB ne sont pas injectés dans req.connection.models.');
+      }
+  
+      const Employe = req.connection.models.Employee;
+      if (!Employe) {
+        throw new Error('Le modèle "Employee" n\'est pas enregistré dans la connexion.');
+      }
+  
+      const { email, password } = req.body;
+      const existingEmploye = await Employe.findOne({ email });
+  
+      if (!existingEmploye || existingEmploye.password !== password) {
+        return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
+      }
+  
+      res.status(200).json(existingEmploye);
     } catch (error) {
-        console.error('Erreur lors de la connexion :', error.message);
-        res.status(500).json({ message: 'Erreur lors de la connexion', error });
+      logger.error(`Erreur dans loginemploye : ${error.message}`);
+      res.status(500).json({ message: 'Erreur lors de la connexion', error: error.message });
     }
-};
+  };
+  
+
 
 
 

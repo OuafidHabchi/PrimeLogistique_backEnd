@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const commentController = require('../controllers/commentController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Comment'];
+  logger.debug(`Middleware commentRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes commentaires
+router.use(dbMiddleware);
 
 // Routes pour les commentaires
 router.post('/create', commentController.createComment); // Créer un commentaire

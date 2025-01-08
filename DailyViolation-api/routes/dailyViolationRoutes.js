@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const dailyViolationController = require('../controllers/dailyViolationController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['DailyViolation'];
+  logger.debug(`Middleware dailyViolationRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes daily violations
+router.use(dbMiddleware);
 
 // Créer une violation
 router.post('/create', dailyViolationController.createViolation);

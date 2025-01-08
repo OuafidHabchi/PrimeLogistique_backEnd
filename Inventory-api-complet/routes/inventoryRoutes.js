@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const inventoryController = require('../controllers/inventoryController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['InventoryItem'];
+  logger.debug(`Middleware inventoryRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes inventory
+router.use(dbMiddleware);
 
 // Routes
 router.get('/', inventoryController.getAllItems); // GET all items

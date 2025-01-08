@@ -1,6 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const dbMiddleware = require('../../utils/middleware');
 const shiftController = require('../controllers/shiftController');
+const logger = require('../../utils/logger');
+const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Shift'];
+  logger.debug(`Middleware shiftRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes shifts
+router.use(dbMiddleware);
 
 // Route pour créer un shift
 router.post('/shifts', shiftController.createShift);

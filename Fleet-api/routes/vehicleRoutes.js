@@ -1,7 +1,18 @@
-// /routes/vehicleRoutes.js
 const express = require('express');
+const dbMiddleware = require('../../utils/middleware');
 const vehicleController = require('../controllers/vehicleController');
+const logger = require('../../utils/logger');
 const router = express.Router();
+
+// Middleware pour spécifier le modèle nécessaire
+router.use((req, res, next) => {
+  req.requiredModels = ['Vehicle'];
+  logger.debug(`Middleware vehicleRoutes : req.requiredModels = ${req.requiredModels}`);
+  next();
+});
+
+// Appliquer `dbMiddleware` dynamiquement sur les routes vehicles
+router.use(dbMiddleware);
 
 // Route pour ajouter un véhicule
 router.post('/add', vehicleController.addVehicle);

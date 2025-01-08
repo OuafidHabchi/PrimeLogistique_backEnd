@@ -70,6 +70,8 @@ exports.hasUnreadMessages = async (req, res) => {
     const Conversation = req.connection.models.Conversation; // Modèle dynamique
     const Message = req.connection.models.Message; // Modèle dynamique
     const { userId } = req.params;
+    console.log("hello");
+    
 
     // Find all conversations involving the user
     const conversations = await Conversation.find({ participants: userId });
