@@ -17,6 +17,7 @@ exports.createDailyNote = async (req, res) => {
             time: req.body.time,
         };
 
+
         console.log("Parsed dailyNoteData:", dailyNoteData);
 
         if (req.file) {
