@@ -46,6 +46,7 @@ app.use((req, res, next) => {
 });
 
 // Import des routes de vos APIs
+const ScroceCrd = require('./ScoreCard-api/routes/csvRoutes');
 const messageRoutes = require('./Messenger-api/routes/messageRoutes');
 const conversationRoutes = require('./Messenger-api/routes/conversationRoutes');
 const clothesRoutes = require('./clothes-api/routes/clothesRoutes');
@@ -70,7 +71,7 @@ const timeCardRoutes = require('./TimeCard-api/routes/timeCardRoutes');
 const vanAssignmentRoutes = require('./VanAssignmen-api/routes/vanAssignmentRoutes');
 const warningRoutes = require('./Warnings-api/routes/worningRoutes');
 const download = require('./Inventory-api/routes/pdfRoutes');
-const ScroceCrd = require('./ScoreCard-api/routes/csvRoutes');
+
 
 // Utilisation des routes avant le middleware dbMiddleware
 app.use('/api/conversations', conversationRoutes);
