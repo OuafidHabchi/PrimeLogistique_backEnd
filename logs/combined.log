@@ -29413,3 +29413,132 @@
 2025-01-10 15:45:36 [WARN]: Déconnexion automatique de la base : VTRL
 2025-01-10 15:45:36 [DEBUG]: Connexion fermée pour inactivité (VTRL).
 2025-01-10 16:27:27 [DEBUG]: Fermeture des connexions MongoDB...
+2025-01-10 16:36:37 [DEBUG]: Tous les modèles ont été validés avec succès.
+2025-01-10 16:36:44 [DEBUG]: Middleware dailyNoteRoutes : req.requiredModels = DailyNote
+2025-01-10 16:36:44 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Modèles demandés (req.requiredModels) : DailyNote
+2025-01-10 16:36:44 [DEBUG]: Tentative d'initialisation du modèle : DailyNote
+2025-01-10 16:36:44 [DEBUG]: Modèle "DailyNote" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:36:44 [DEBUG]: Demande de modèle : DailyNote
+2025-01-10 16:36:44 [INFO]: Modèle "DailyNote" créé avec succès.
+2025-01-10 16:36:44 [DEBUG]: Modèle "DailyNote" initialisé avec succès.
+2025-01-10 16:36:44 [DEBUG]: Modèles nécessaires initialisés : DailyNote
+2025-01-10 16:36:44 [DEBUG]: req.connection.models après injection : DailyNote
+2025-01-10 16:36:44 [DEBUG]: Middleware employeRoutes : req.requiredModels = Employee
+2025-01-10 16:36:44 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Modèles demandés (req.requiredModels) : Employee
+2025-01-10 16:36:44 [DEBUG]: Tentative d'initialisation du modèle : Employee
+2025-01-10 16:36:44 [DEBUG]: Modèle "Employee" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:36:44 [DEBUG]: Demande de modèle : Employee
+2025-01-10 16:36:44 [INFO]: Modèle "Employee" créé avec succès.
+2025-01-10 16:36:44 [DEBUG]: Modèle "Employee" initialisé avec succès.
+2025-01-10 16:36:44 [DEBUG]: Modèles nécessaires initialisés : Employee
+2025-01-10 16:36:44 [DEBUG]: req.connection.models après injection : Employee
+2025-01-10 16:36:44 [DEBUG]: Middleware: Début du traitement
+2025-01-10 16:36:44 [DEBUG]: Middleware: DSP Code reçu : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Middleware: Connexion MongoDB injectée dans req.connection.
+2025-01-10 16:36:44 [DEBUG]: Middleware employeRoutes : req.requiredModels = Employee
+2025-01-10 16:36:44 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:36:44 [DEBUG]: Modèles demandés (req.requiredModels) : Employee
+2025-01-10 16:36:44 [DEBUG]: Tentative d'initialisation du modèle : Employee
+2025-01-10 16:36:44 [DEBUG]: Modèle "Employee" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:36:44 [DEBUG]: Demande de modèle : Employee
+2025-01-10 16:36:44 [INFO]: Modèle "Employee" créé avec succès.
+2025-01-10 16:36:44 [DEBUG]: Modèle "Employee" initialisé avec succès.
+2025-01-10 16:36:44 [DEBUG]: Modèles nécessaires initialisés : Employee
+2025-01-10 16:36:44 [DEBUG]: req.connection.models après injection : Employee
+2025-01-10 16:36:45 [DEBUG]: Connexion établie à la base : VTRL
+2025-01-10 16:36:45 [DEBUG]: Connexion établie à la base : VTRL
+2025-01-10 16:36:45 [DEBUG]: Connexion établie à la base : VTRL
+2025-01-10 16:36:45 [DEBUG]: Connexion établie à la base : VTRL
+2025-01-10 16:37:20 [DEBUG]: Middleware employeRoutes : req.requiredModels = Employee
+2025-01-10 16:37:20 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:37:20 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:37:20 [DEBUG]: Modèles demandés (req.requiredModels) : Employee
+2025-01-10 16:37:20 [DEBUG]: Tentative d'initialisation du modèle : Employee
+2025-01-10 16:37:20 [DEBUG]: Modèle "Employee" déjà existant dans connection.models.
+2025-01-10 16:37:20 [DEBUG]: Modèles nécessaires initialisés : Employee
+2025-01-10 16:37:20 [DEBUG]: req.connection.models après injection : Employee
+2025-01-10 16:37:20 [DEBUG]: Middleware dailyNoteRoutes : req.requiredModels = DailyNote
+2025-01-10 16:37:20 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:37:20 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:37:20 [DEBUG]: Modèles demandés (req.requiredModels) : DailyNote
+2025-01-10 16:37:20 [DEBUG]: Tentative d'initialisation du modèle : DailyNote
+2025-01-10 16:37:20 [DEBUG]: Modèle "DailyNote" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:37:20 [DEBUG]: Demande de modèle : DailyNote
+2025-01-10 16:37:20 [INFO]: Modèle "DailyNote" créé avec succès.
+2025-01-10 16:37:20 [DEBUG]: Modèle "DailyNote" initialisé avec succès.
+2025-01-10 16:37:20 [DEBUG]: Modèles nécessaires initialisés : DailyNote
+2025-01-10 16:37:20 [DEBUG]: req.connection.models après injection : Employee, DailyNote
+2025-01-10 16:37:20 [DEBUG]: Middleware: Début du traitement
+2025-01-10 16:37:20 [DEBUG]: Middleware: DSP Code reçu : vtrl1
+2025-01-10 16:37:20 [DEBUG]: Middleware: Connexion MongoDB injectée dans req.connection.
+2025-01-10 16:37:25 [DEBUG]: Middleware employeRoutes : req.requiredModels = Employee
+2025-01-10 16:37:25 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:37:25 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:37:25 [DEBUG]: Modèles demandés (req.requiredModels) : Employee
+2025-01-10 16:37:25 [DEBUG]: Tentative d'initialisation du modèle : Employee
+2025-01-10 16:37:25 [DEBUG]: Modèle "Employee" déjà existant dans connection.models.
+2025-01-10 16:37:25 [DEBUG]: Modèles nécessaires initialisés : Employee
+2025-01-10 16:37:25 [DEBUG]: req.connection.models après injection : Employee, DailyNote, Conversation, Message
+2025-01-10 16:39:47 [DEBUG]: Fermeture des connexions MongoDB...
+2025-01-10 16:39:51 [DEBUG]: Tous les modèles ont été validés avec succès.
+2025-01-10 16:39:54 [DEBUG]: Middleware employeRoutes : req.requiredModels = Employee
+2025-01-10 16:39:54 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:39:54 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:39:54 [DEBUG]: Modèles demandés (req.requiredModels) : Employee
+2025-01-10 16:39:54 [DEBUG]: Tentative d'initialisation du modèle : Employee
+2025-01-10 16:39:54 [DEBUG]: Modèle "Employee" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:39:54 [DEBUG]: Demande de modèle : Employee
+2025-01-10 16:39:54 [INFO]: Modèle "Employee" créé avec succès.
+2025-01-10 16:39:54 [DEBUG]: Modèle "Employee" initialisé avec succès.
+2025-01-10 16:39:54 [DEBUG]: Modèles nécessaires initialisés : Employee
+2025-01-10 16:39:54 [DEBUG]: req.connection.models après injection : Employee
+2025-01-10 16:39:55 [DEBUG]: Connexion établie à la base : VTRL
+2025-01-10 16:40:05 [DEBUG]: Middleware employeRoutes : req.requiredModels = Employee
+2025-01-10 16:40:05 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:40:05 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:40:05 [DEBUG]: Modèles demandés (req.requiredModels) : Employee
+2025-01-10 16:40:05 [DEBUG]: Tentative d'initialisation du modèle : Employee
+2025-01-10 16:40:05 [DEBUG]: Modèle "Employee" déjà existant dans connection.models.
+2025-01-10 16:40:05 [DEBUG]: Modèles nécessaires initialisés : Employee
+2025-01-10 16:40:05 [DEBUG]: req.connection.models après injection : Employee
+2025-01-10 16:40:06 [DEBUG]: Middleware worningRoutes : req.requiredModels = Worning
+2025-01-10 16:40:06 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:40:06 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:40:06 [DEBUG]: Modèles demandés (req.requiredModels) : Worning
+2025-01-10 16:40:06 [DEBUG]: Tentative d'initialisation du modèle : Worning
+2025-01-10 16:40:06 [DEBUG]: Modèle "Worning" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:40:06 [DEBUG]: Demande de modèle : Worning
+2025-01-10 16:40:06 [INFO]: Modèle "Worning" créé avec succès.
+2025-01-10 16:40:06 [DEBUG]: Modèle "Worning" initialisé avec succès.
+2025-01-10 16:40:06 [DEBUG]: Modèles nécessaires initialisés : Worning
+2025-01-10 16:40:06 [DEBUG]: req.connection.models après injection : Employee, Worning
+2025-01-10 16:40:20 [DEBUG]: Middleware dailyNoteRoutes : req.requiredModels = DailyNote
+2025-01-10 16:40:20 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:40:20 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:40:20 [DEBUG]: Modèles demandés (req.requiredModels) : DailyNote
+2025-01-10 16:40:20 [DEBUG]: Tentative d'initialisation du modèle : DailyNote
+2025-01-10 16:40:20 [DEBUG]: Modèle "DailyNote" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:40:20 [DEBUG]: Demande de modèle : DailyNote
+2025-01-10 16:40:20 [INFO]: Modèle "DailyNote" créé avec succès.
+2025-01-10 16:40:20 [DEBUG]: Modèle "DailyNote" initialisé avec succès.
+2025-01-10 16:40:20 [DEBUG]: Modèles nécessaires initialisés : DailyNote
+2025-01-10 16:40:20 [DEBUG]: req.connection.models après injection : Employee, Worning, DailyNote
+2025-01-10 16:41:27 [DEBUG]: Tous les modèles ont été validés avec succès.
+2025-01-10 16:43:21 [DEBUG]: Middleware dailyNoteRoutes : req.requiredModels = DailyNote
+2025-01-10 16:43:21 [DEBUG]: DSP Code reçu : vtrl1
+2025-01-10 16:43:21 [DEBUG]: Connexion établie pour la base : vtrl1
+2025-01-10 16:43:21 [DEBUG]: Modèles demandés (req.requiredModels) : DailyNote
+2025-01-10 16:43:21 [DEBUG]: Tentative d'initialisation du modèle : DailyNote
+2025-01-10 16:43:21 [DEBUG]: Modèle "DailyNote" non trouvé dans connection.models. Création en cours...
+2025-01-10 16:43:21 [DEBUG]: Demande de modèle : DailyNote
+2025-01-10 16:43:21 [INFO]: Modèle "DailyNote" créé avec succès.
+2025-01-10 16:43:21 [DEBUG]: Modèle "DailyNote" initialisé avec succès.
+2025-01-10 16:43:21 [DEBUG]: Modèles nécessaires initialisés : DailyNote
+2025-01-10 16:43:21 [DEBUG]: req.connection.models après injection : DailyNote
+2025-01-10 16:43:22 [DEBUG]: Connexion établie à la base : VTRL
+2025-01-10 16:44:03 [DEBUG]: Fermeture des connexions MongoDB...

@@ -2,13 +2,27 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
 
+// Chemin du dossier des uploads
+const uploadDir = path.join(__dirname, '../uploads');
+
+// Fonction pour vérifier et créer le dossier
+const ensureUploadDirExists = () => {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log(`Dossier créé : ${uploadDir}`);
+  }
+};
+
 // Contrôleur pour gérer l'upload et le parsing du fichier CSV
 exports.uploadCSV = (req, res) => {  
   if (!req.file) {
     return res.status(400).json({ message: 'Aucun fichier uploadé' });
   }
 
-  const filePath = path.join(__dirname, '../uploads', req.file.filename);
+  // Assurez-vous que le dossier des uploads existe
+  ensureUploadDirExists();
+
+  const filePath = path.join(uploadDir, req.file.filename);
   const results = [];
 
   // Lire et parser le fichier CSV
