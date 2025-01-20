@@ -111,3 +111,4 @@
 2025-01-18 22:30:09 [ERROR]: Erreur de connexion (VTRL) :
 2025-01-18 22:31:03 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
 2025-01-18 22:31:14 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-20 12:32:12 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.
