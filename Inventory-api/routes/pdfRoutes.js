@@ -55,6 +55,7 @@ router.post('/generate-pdf', async (req, res) => {
         }
 
         // Section téléphones
+        // Section téléphones
         const phonesStartY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : vehiclesStartY + 20;
         doc.setFontSize(16);
         doc.text('Phones', 10, phonesStartY);
@@ -62,11 +63,12 @@ router.post('/generate-pdf', async (req, res) => {
         if (phones.length > 0) {
             doc.autoTable({
                 startY: phonesStartY + 5,
-                head: [['Name', 'Exists', 'Status']],
+                head: [['Name', 'Exists', 'Status', 'Comment']], // Ajout de l'en-tête "Comment"
                 body: phones.map((p) => [
                     p.name,
                     p.exists ? 'Yes' : 'No',
                     p.status || 'N/A',
+                    p.comment || 'No comment', // Ajout du champ "comment"
                 ]),
             });
         } else {
@@ -81,16 +83,18 @@ router.post('/generate-pdf', async (req, res) => {
         if (batteries.length > 0) {
             doc.autoTable({
                 startY: batteriesStartY + 5,
-                head: [['Name', 'Exists', 'Status']],
+                head: [['Name', 'Exists', 'Status', 'Comment']], // Ajout de l'en-tête "Comment"
                 body: batteries.map((b) => [
                     b.name,
                     b.exists ? 'Yes' : 'No',
                     b.status || 'N/A',
+                    b.comment || 'No comment', // Ajout du champ "comment"
                 ]),
             });
         } else {
             doc.text('No batteries available.', 10, batteriesStartY + 10);
         }
+
 
         // Sauvegarde du PDF
         const pdfPath = path.join(downloadsDir, fileName);

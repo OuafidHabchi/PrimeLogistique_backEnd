@@ -1,10 +1,19 @@
-const { sendPushNotification } = require('../../utils/notifications'); // Importer la fonction de notification
+const fs = require('fs');
+const path = require('path');
+const { sendPushNotification } = require('../../utils/notifications');
 
-// Obtenir toutes les warnings
+// Définir le dossier où les images seront stockées
+const uploadDirectory = path.join(__dirname, '../uploads-wornings');
+
+// S'assurer que le dossier existe
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
 // Obtenir toutes les warnings sans les photos
 exports.getAllWornings = async (req, res) => {
     try {
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+        const Worning = req.connection.models.Worning;
         const wornings = await Worning.find().select('-photo'); // Exclure le champ photo
         res.status(200).json(wornings);
     } catch (err) {
@@ -12,98 +21,114 @@ exports.getAllWornings = async (req, res) => {
     }
 };
 
-
 // Obtenir un warning par ID avec gestion de l'image
 exports.getWorningById = async (req, res) => {
     try {
         const { id } = req.params;
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+        const Worning = req.connection.models.Worning;
         const worning = await Worning.findById(id);
         if (!worning) {
             return res.status(404).send({ error: "Warning not found." });
         }
 
-        // Include the image with a Base64 prefix
-        const worningWithPhoto = {
-            ...worning.toObject(),
-            photo: worning.photo ? `data:image/jpeg;base64,${worning.photo.toString('base64')}` : null,
-        };
-
-        res.status(200).send(worningWithPhoto);
+        worning.photo = worning.photo ? `${req.protocol}://${req.get('host')}/${worning.photo}` : null;
+        res.status(200).json(worning);
     } catch (error) {
         res.status(500).send({ error: "Error while fetching warning details.", details: error.message });
     }
 };
 
-
-
-
 // Ajouter un nouveau warning
 exports.createWorning = async (req, res) => {
     try {
-        // Valider les données requises
-        if (!req.body.employeID || !req.body.type || !req.body.raison || !req.body.description || !req.body.date) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+        const {
+            employeID,
+            type,
+            raison,
+            description,
+            severity,
+            date,
+            read,
+            signature,
+            link,
+            expoPushToken,
+            template,
+            susNombre,
+        } = req.body;
+        
 
-        // Créer un nouvel objet Warning
+        // Validation des champs requis
+        // if (!employeID || !type || !raison || !description ) {
+        //     return res.status(400).json({ message: "Missing required fields" });
+        // }
+
+        const Worning = req.connection.models.Worning;
+
+        // Création du warning avec les données reçues
         const newWorning = new Worning({
-            employeID: req.body.employeID,
-            type: req.body.type,
-            raison: req.body.raison,
-            description: req.body.description,
-            severity: req.body.severity || "",
-            startDate: req.body.startDate || "",
-            endDate: req.body.endDate || "",
-            date: req.body.date,
-            read: req.body.read === "true",
-            signature: req.body.signature === "true",
+            employeID,
+            type,
+            raison,
+            description,
+            severity: severity || "",
+            date,
+            link,
+            read: read === "true",
+            signature: signature === "true",
+            template,
+            susNombre,
         });
 
-        // Ajouter la photo si présente
-        if (req.file) {
-            newWorning.photo = req.file.buffer;
-        }
 
-        // Sauvegarder dans la base de données
+        // Gestion du fichier photo si présent
+        if (req.file) {
+            newWorning.photo = `uploads-wornings/${req.file.filename}`;
+        }
+        
+
+        // Sauvegarde du warning dans la base de données
         const savedWorning = await newWorning.save();
 
-        // Vérifiez si un expoPushToken est fourni et envoyez une notification
-        if (req.body.expoPushToken) {
+        // Envoi d'une notification si un token Expo est fourni
+        if (expoPushToken) {
             const notificationTitle = "New Warning Created";
-            const notificationBody = `A warning of type ${req.body.type} has been created. Check the details in your app.`;
-
+            const notificationBody = `A warning of type ${type} has been created. Check the details in your app.`;
             try {
-                await sendPushNotification(req.body.expoPushToken, notificationTitle, notificationBody);
-                console.log("Notification sent successfully");
+                await sendPushNotification(expoPushToken, notificationTitle, notificationBody);
             } catch (error) {
                 console.error("Error sending push notification:", error);
             }
         }
 
+        // Réponse avec le warning sauvegardé
         res.status(201).json(savedWorning);
     } catch (err) {
         console.error("Erreur lors de la création du warning:", err);
-        res.status(500).json({ message: "Erreur lors de la création du warning", error: err });
+
+        // Réponse en cas d'erreur
+        res.status(500).json({
+            message: "Erreur lors de la création du warning",
+            error: err.message || err,
+        });
     }
 };
-
 
 
 // Mettre à jour un warning
 exports.updateWorning = async (req, res) => {
     try {
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+        const Worning = req.connection.models.Worning;
         const updateData = { ...req.body };
-        // Supprimer l'image si `removePhoto` est true
+
         if (req.body.removePhoto === "true") {
             updateData.photo = null;
         }
-        // Ajouter une nouvelle photo si elle est envoyée
+
+        // Gestion du fichier photo si présent
         if (req.file) {
-            updateData.photo = req.file.buffer;
+            updateData.photo = `uploads-wornings/${req.file.filename}`;
         }
+
         const updatedWorning = await Worning.findByIdAndUpdate(req.params.id, updateData, { new: true });
         if (!updatedWorning) return res.status(404).json({ message: "Warning introuvable" });
 
@@ -114,14 +139,21 @@ exports.updateWorning = async (req, res) => {
     }
 };
 
-
-
 // Supprimer un warning
 exports.deleteWorning = async (req, res) => {
     try {
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+        const Worning = req.connection.models.Worning;
         const deletedWorning = await Worning.findByIdAndDelete(req.params.id);
+
         if (!deletedWorning) return res.status(404).json({ message: 'Warning introuvable' });
+
+        if (deletedWorning.photo) {
+            const filePath = path.join(__dirname, '../', deletedWorning.photo);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
+
         res.status(200).json({ message: 'Warning supprimé avec succès' });
     } catch (err) {
         res.status(500).json({ message: 'Erreur lors de la suppression du warning', error: err });
@@ -131,63 +163,50 @@ exports.deleteWorning = async (req, res) => {
 // Obtenir tous les warnings par employeID
 exports.getWorningsByEmployeID = async (req, res) => {
     try {
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+        const Worning = req.connection.models.Worning;
         const employeID = req.params.employeID;
-        const wornings = await Worning.find({ employeID }).select('-photo');;
-        if (wornings.length === 0) return res.status(200).json([]); // Pas de warnings, réponse vide
+        const wornings = await Worning.find({ employeID }).select('-photo');
         res.status(200).json(wornings);
     } catch (err) {
         res.status(500).json({ message: 'Erreur lors de la récupération des warnings', error: err });
     }
 };
 
-
 // Ajouter plusieurs warnings
 exports.createMultipleWarnings = async (req, res) => {
     try {
         const warnings = req.body;
-        const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
-        // Validation de l'entrée
+        const Worning = req.connection.models.Worning;
+
         if (!Array.isArray(warnings) || warnings.length === 0) {
             return res.status(400).json({ message: 'Invalid input. Provide an array of warnings.' });
         }
 
-        // Formater la date pour chaque warning
         const formattedWarnings = warnings.map(warning => ({
             ...warning,
-            date: new Date().toISOString().split('T')[0] // Date formatée en 'YYYY-MM-DD'
+            date: new Date().toISOString().split('T')[0],
         }));
 
-        // Insérer plusieurs warnings
         const savedWarnings = await Worning.insertMany(formattedWarnings);
         res.status(200).json({ message: 'Warnings created successfully', data: savedWarnings });
 
-        // Envoyer des notifications pour chaque warning avec expoPushToken
         const notifications = formattedWarnings.filter(w => w.expoPushToken);
         if (notifications.length > 0) {
             const notificationPromises = notifications.map(warning => {
                 const notificationTitle = "New Warning Created";
                 const notificationBody = `A warning of type ${warning.type} has been created. Check the details in your app.`;
-
                 return sendPushNotification(warning.expoPushToken, notificationTitle, notificationBody);
             });
 
-            // Attendre que toutes les notifications soient envoyées
-            Promise.allSettled(notificationPromises)
-                .then(results => {
-                    results.forEach((result, index) => {
-                        if (result.status === 'rejected') {
-                            console.error(`Notification failed for warning ${index}:`, result.reason);
-                        } else {
-                            console.log(`Notification sent successfully for warning ${index}`);
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error("Error sending batch notifications:", error);
+            Promise.allSettled(notificationPromises).then(results => {
+                results.forEach((result, index) => {
+                    if (result.status === 'rejected') {
+                        console.error(`Notification failed for warning ${index}:`, result.reason);
+                    } else {
+                        console.log(`Notification sent successfully for warning ${index}`);
+                    }
                 });
-        } else {
-            console.warn("No expoPushToken provided for any warnings in the batch.");
+            });
         }
     } catch (err) {
         console.error("Erreur lors de la création de plusieurs warnings:", err);
@@ -195,56 +214,52 @@ exports.createMultipleWarnings = async (req, res) => {
     }
 };
 
+// Vérifier les suspensions pour les employés
 exports.checkSuspensionsForEmployees = async (req, res) => {
-    const Worning = req.connection.models.Worning; // Utilisation du modèle dynamique
+    const Worning = req.connection.models.Worning;
     const { employeIDs, date } = req.body;
-    // Valider les paramètres
+
     if (!employeIDs || !Array.isArray(employeIDs) || employeIDs.length === 0 || !date) {
-        return res.status(400).json({
-            message: 'employeIDs (array) et date (string) sont requis',
-        });
+        return res.status(400).json({ message: 'employeIDs (array) et date (string) sont requis' });
     }
 
     try {
-        // Convertir la date en une chaîne formatée
-        const formattedDate = new Date(date).toISOString().split('T')[0]; // Format 'YYYY-MM-DD'
-
-        // Construire la requête pour vérifier les suspensions
+        const formattedDate = new Date(date).toISOString().split('T')[0];
         const query = {
             employeID: { $in: employeIDs },
             type: 'suspension',
             $or: [
-                {
-                    startDate: { $lte: formattedDate },
-                    endDate: { $gte: formattedDate },
-                },
-                {
-                    startDate: { $exists: false },
-                    endDate: { $exists: false },
-                },
+                { startDate: { $lte: formattedDate }, endDate: { $gte: formattedDate } },
+                { startDate: { $exists: false }, endDate: { $exists: false } },
             ],
         };
 
-        // Exécuter la requête MongoDB
         const suspensions = await Worning.find(query);
-
-        // Mapper les résultats pour retourner un statut pour chaque employé
         const suspensionStatuses = employeIDs.reduce((statuses, id) => {
-            statuses[id] = suspensions.some(
-                (suspension) => suspension.employeID === id
-            );
+            statuses[id] = suspensions.some(suspension => suspension.employeID === id);
             return statuses;
         }, {});
 
-        // Retourner les résultats
         return res.status(200).json({ suspensions: suspensionStatuses });
     } catch (error) {
         console.error('Erreur lors de la vérification des suspensions :', error);
-        return res.status(500).json({
-            message: 'Erreur interne du serveur',
-            error: error.message,
-        });
+        return res.status(500).json({ message: 'Erreur interne du serveur', error: error.message });
     }
 };
 
+// Obtenir tous les warnings avec template === true
+exports.getTemplateWarnings = async (req, res) => {    
+    try {
+        const Worning = req.connection.models.Worning;
 
+        // Query the database for warnings with template === true
+        const templateWarnings = await Worning.find({ template: true });
+
+        // Return the array (empty or not)
+        res.status(200).json(templateWarnings);
+    } catch (err) {
+        console.error('Erreur lors de la récupération des warnings templates:', err);
+        // In case of an error, return an empty array with a 200 status
+        res.status(200).json([]);
+    }
+};

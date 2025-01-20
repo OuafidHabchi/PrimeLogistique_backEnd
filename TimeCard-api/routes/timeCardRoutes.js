@@ -2,7 +2,7 @@ const express = require('express');
 const dbMiddleware = require('../../utils/middleware');
 const timeCardController = require('../controllers/timeCardController');
 const logger = require('../../utils/logger');
-
+const upload = require("../Middleware/fileUploadMiddleware");
 const router = express.Router();
 
 // Middleware pour spécifier le modèle nécessaire
@@ -32,5 +32,11 @@ router.get('/timecardsss/dday/:day', timeCardController.getTimeCardsByDay);
 
 // Route pour la mise à jour ou création en masse des attributs Cortex
 router.post('/timecards/bulk-update-cortex', timeCardController.bulkUpdateOrCreateCortexAttributes);
+
+router.post(
+  "/timecards/:id/upload-image",
+  upload.single("photo"), // Accept a single file with the field name 'photo'
+  timeCardController.uploadTimeCardImage
+);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const timeCardSchema = new mongoose.Schema({
   employeeId: {
@@ -32,7 +33,7 @@ const timeCardSchema = new mongoose.Schema({
   CortexEndTime:{
     type: String,
   },
-
+ image:{type:String},
 });
 
 

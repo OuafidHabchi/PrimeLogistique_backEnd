@@ -11,8 +11,8 @@ const dailyNoteSchema = new mongoose.Schema({
   assignedVanNameForToday: { type: String, required: true },
   lu: { type: Boolean, default: false },
   today: { type: String }, // Par défaut, la date d'aujourd'hui
-  time: { type: String, }, // Par défaut, l'heure locale
-  photo: { type: Buffer },
+  time: { type: String }, // Par défaut, l'heure locale
+  photo: { type: String }, // Chemin de l'image dans le système de fichiers
 });
 
 // Export du schéma

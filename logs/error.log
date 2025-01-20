@@ -28,3 +28,86 @@
 2025-01-08 12:10:30 [ERROR]: Erreur : dsp_code est requis.
 2025-01-08 12:10:38 [ERROR]: Erreur : dsp_code est requis.
 2025-01-08 12:20:19 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vyrl1" introuvable dans le mapping.
+2025-01-10 16:47:28 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vrl11" introuvable dans le mapping.
+2025-01-11 13:55:54 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-11 19:34:03 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-11 19:34:21 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-11 21:06:38 [ERROR]: Erreur lors de la connexion à MongoDB : DSP code "vtrl#" introuvable dans le mapping.
+2025-01-13 12:56:10 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:10 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:40 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:40 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:40 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:40 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:56:50 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:10 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:10 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:11 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:11 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:11 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:12 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:12 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:12 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:20 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:20 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 12:57:21 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 19:46:47 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-13 19:46:47 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-14 21:41:36 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-14 21:41:39 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-14 21:41:56 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-14 21:44:53 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-14 21:47:58 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-14 21:51:02 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 09:57:04 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:00:01 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:01:17 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:01:18 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:01:18 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:01:20 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:03:01 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:06:05 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:09:00 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:38:57 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:38:59 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:39:02 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:39:02 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-15 10:39:03 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-16 11:25:51 [ERROR]: Erreur : dsp_code est requis.
+2025-01-16 12:06:14 [ERROR]: Middleware: dsp_code est requis.
+2025-01-17 10:58:26 [ERROR]: Middleware: dsp_code est requis.
+2025-01-17 14:45:53 [ERROR]: Erreur : dsp_code est requis.
+2025-01-17 14:54:21 [ERROR]: Erreur : dsp_code est requis.
+2025-01-17 14:54:29 [ERROR]: Erreur : dsp_code est requis.
+2025-01-17 16:43:50 [ERROR]: Erreur : dsp_code est requis.
+2025-01-17 16:44:09 [ERROR]: Erreur : dsp_code est requis.
+2025-01-17 16:45:19 [ERROR]: Erreur : dsp_code est requis.
+2025-01-18 16:38:58 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-18 16:42:43 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-18 16:42:53 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-18 16:43:11 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-18 16:43:21 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-18 16:46:19 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-18 16:46:29 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-18 17:56:01 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-18 22:29:52 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-18 22:30:09 [ERROR]: Erreur de connexion (VTRL) :
+2025-01-18 22:31:03 [ERROR]: Erreur dans loginemploye : Operation `employees.findOne()` buffering timed out after 10000ms
+2025-01-18 22:31:14 [ERROR]: Erreur de connexion (VTRL) :

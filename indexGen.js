@@ -3,26 +3,34 @@ const cors = require('cors');
 const http = require('http'); // Importer http pour créer le serveur
 const socketIo = require('socket.io'); // Importer Socket.IO
 const path = require('path');
+require('dotenv').config();
 // Initialisation de l'application
 const app = express();
 // Création du serveur HTTP avec Express
 const server = http.createServer(app);
+// Middleware global
+app.use(cors());
+app.use(express.json());
+
 
 // Chemin relatif basé sur le répertoire du script
 const UPLOADS_DIR = path.join(__dirname, 'Messenger-api/uploads');
 
 // Servir les fichiers statiques
 app.use('/uploads', express.static(UPLOADS_DIR));
-app.get('/test', (req, res) => {
-  const filePath = path.join(UPLOADS_DIR, 'test.png');
-  console.log('Chemin absolu du fichier :', filePath);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      console.error('Erreur lors de l\'envoi du fichier :', err);
-      res.status(500).send('Erreur lors de l\'envoi du fichier');
-    }
-  });
-});
+
+// Servir les fichiers uploadés pour EquipmentUpdate
+app.use('/equipment-uploads', express.static(path.join(__dirname, 'EquipmentUpdate-api/uploadsequipment')));
+
+// Servir les fichiers uploadés pour DailyNotes
+app.use('/uploads-daily-notes', express.static(path.join(__dirname, 'DailyNote/uploadsdailynote')));
+
+app.use('/uploads-wornings', express.static(path.join(__dirname, 'Warnings-api/uploads-wornings')));
+
+app.use('/uploads-timecard', express.static(path.join(__dirname, 'TimeCard-api/timecarduploads')));
+
+
+
 
 
 // Initialisation de Socket.IO
@@ -33,9 +41,7 @@ const io = socketIo(server, {
   },
 });
 
-// Middleware global
-app.use(cors());
-app.use(express.json());
+
 
 // Middleware pour initialiser req.requiredModels par défaut
 app.use((req, res, next) => {
@@ -71,6 +77,8 @@ const timeCardRoutes = require('./TimeCard-api/routes/timeCardRoutes');
 const vanAssignmentRoutes = require('./VanAssignmen-api/routes/vanAssignmentRoutes');
 const warningRoutes = require('./Warnings-api/routes/worningRoutes');
 const download = require('./Inventory-api/routes/pdfRoutes');
+const equipmentUpdateRoutes = require('./EquipmentUpdate-api/routes/EquipmentUpdateRoutes');
+
 
 
 // Utilisation des routes avant le middleware dbMiddleware
@@ -99,6 +107,8 @@ app.use('/api/vanAssignments', vanAssignmentRoutes);
 app.use('/api/warnings', warningRoutes);
 app.use('/api/download', download);
 app.use('/api/ScroceCrd', ScroceCrd);
+app.use('/api/equipment-update', equipmentUpdateRoutes);
+
 
 // Ajouter Socket.IO à l'application
 app.set('socketio', io);

@@ -1,9 +1,18 @@
+const fs = require('fs');
+const path = require('path');
 const { sendPushNotification } = require('../../utils/notifications');
 
-// Créer une nouvelle DailyNote
+// Répertoire pour stocker les images
+const uploadDirectory = path.join(__dirname, '../uploadsdailynote');
+
+// Vérifiez si le répertoire existe, sinon créez-le
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
 exports.createDailyNote = async (req, res) => {
     try {
-        console.log("Request received at createDailyNote"); // Log initial
+        console.log("Request received at createDailyNote");
 
         const DailyNote = req.connection.models.DailyNote;
 
@@ -13,32 +22,36 @@ exports.createDailyNote = async (req, res) => {
             problemType: req.body.problemType,
             employee: JSON.parse(req.body.employee),
             assignedVanNameForToday: req.body.assignedVanNameForToday,
-            today: Array.isArray(req.body.today) ? req.body.today[0] : req.body.today, // Convertit un tableau en chaîne si nécessaire
+            today: Array.isArray(req.body.today) ? req.body.today[0] : req.body.today, // Assure une seule date
             time: req.body.time,
         };
 
-
         console.log("Parsed dailyNoteData:", dailyNoteData);
 
+        // Gestion du fichier (photo)
         if (req.file) {
-            console.log("File detected, adding photo to dailyNoteData...");
-            dailyNoteData.photo = req.file.buffer;
+            console.log("File detected, adding photo path...");
+            dailyNoteData.photo = `uploads-daily-notes/${req.file.filename}`; // Récupérer uniquement le chemin du fichier
         } else {
             console.log("No file provided in the request.");
         }
 
+        // Crée une nouvelle instance de DailyNote avec les données
         const dailyNote = new DailyNote(dailyNoteData);
         console.log("DailyNote instance created:", dailyNote);
 
+        // Sauvegarde la note dans la base de données
         await dailyNote.save();
         console.log("DailyNote saved successfully:", dailyNote);
 
+        // Répond avec succès
         res.status(201).send(dailyNote);
 
+        // Envoi de la notification push (si le token est disponible)
         if (req.body.expoPushToken) {
             console.log("Sending push notification...");
             const notificationTitle = "New Daily Note Created";
-            const notificationBody = `A new note has been created: "${req.body.problemDescription}". Check it now!`;
+            const notificationBody = `A new note has been created: \"${req.body.problemDescription}\". Check it now!`;
             await sendPushNotification(req.body.expoPushToken, notificationTitle, notificationBody);
             console.log("Push notification sent.");
         }
@@ -47,6 +60,7 @@ exports.createDailyNote = async (req, res) => {
         res.status(400).send({ error: error.message });
     }
 };
+
 
 
 // Obtenir toutes les DailyNotes
@@ -68,8 +82,8 @@ exports.getDailyNotesByDate = async (req, res) => {
             return res.status(400).send({ error: "La date est requise dans la requête." });
         }
 
-        const DailyNote = req.connection.models.DailyNote;;
-        const dailyNotes = await DailyNote.find({ today: date }, { photo: 0 });
+        const DailyNote = req.connection.models.DailyNote;
+        const dailyNotes = await DailyNote.find({ today: date });
         res.status(200).send(dailyNotes);
     } catch (error) {
         res.status(500).send({ error: error.message });
@@ -108,12 +122,7 @@ exports.getNoteDetails = async (req, res) => {
             return res.status(404).send({ error: "Note introuvable." });
         }
 
-        const noteWithPhoto = {
-            ...note.toObject(),
-            photo: note.photo ? `data:image/jpeg;base64,${note.photo.toString('base64')}` : null,
-        };
-
-        res.status(200).send(noteWithPhoto);
+        res.status(200).send(note);
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

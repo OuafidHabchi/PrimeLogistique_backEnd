@@ -1,3 +1,4 @@
+const path = require("path");
 const { sendPushNotification } = require('../../utils/notifications'); // Importer la fonction de notification
 
 
@@ -247,4 +248,38 @@ exports.bulkUpdateOrCreateCortexAttributes = async (req, res) => {
   }
 };
 
+
+exports.uploadTimeCardImage = async (req, res) => {
+  try {
+    const TimeCard = req.connection.models.TimeCard; // Dynamic model
+    const { id } = req.params; // Get time card ID from URL
+
+    // Ensure the file is uploaded
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded." });
+    }
+
+    // Construct the file path
+    const imagePath = `/${req.file.filename}`;
+
+    // Find the time card and update the image field
+    const timeCard = await TimeCard.findByIdAndUpdate(
+      id,
+      { image: imagePath },
+      { new: true } // Return the updated document
+    );
+
+    if (!timeCard) {
+      return res.status(404).json({ message: "Time card not found." });
+    }
+
+    res.status(200).json({
+      message: "Image uploaded successfully.",
+      timeCard,
+    });
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    res.status(500).json({ message: "Error uploading image.", error });
+  }
+};
 

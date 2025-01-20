@@ -25,6 +25,7 @@ const TimeCard = require('../TimeCard-api/models/TimeCard');
 const VanAssignment = require('../VanAssignmen-api/models/VanAssignment');
 const Worning = require('../Warnings-api/models/worning');
 const Employee = require('../Employes-api/models/Employee');
+const EquipmentUpdate = require('../EquipmentUpdate-api/models/EquipmentUpdate')
 
 // Mapping des modèles
 const modelsMap = {

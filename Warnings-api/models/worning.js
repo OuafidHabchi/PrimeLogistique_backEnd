@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
-
 const worningSchema = new mongoose.Schema({
-    employeID: { type: String, required: true },
-    type:{ type: String, required: true },
-    startDate:{type: String},
-    endDate:{type: String},
+    employeID: { type: String },
+    type: { type: String, required: true },
     raison: { type: String, required: true },
-    focus:{type: String},
+    focus: { type: String },
     description: { type: String, required: true },
-    date: { type: String, required: true },
+    date: { type: String },
+    link: { type: String },
     severity: { type: String },
     read: { type: Boolean, default: false },
     signature: { type: Boolean, default: false },
-    photo: { type: Buffer }, // Ajout du champ photo
+    photo: { type: String }, // Le chemin du fichier sera stocké ici
+    template:{ type: Boolean },
+    susNombre: {type:String},
 
 });
 

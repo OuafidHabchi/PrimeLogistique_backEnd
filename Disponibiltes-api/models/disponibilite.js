@@ -9,6 +9,7 @@ const disponibiliteSchema = new mongoose.Schema({
   confirmation: { type: String }, // Confirmation (optionnel)
   presence: { type: String }, // Présence (optionnel)
   expoPushToken: { type: String }, // Token pour les notifications push (optionnel)
+  suspension:{type:Boolean}
 });
 
 // Exporter uniquement le schéma

@@ -422,7 +422,148 @@ exports.updateDisponibilitePresenceById = async (req, res) => {
 };
 
 
+exports.getDisponibilitesByDate = async (req, res) => {
+    const { selectedDay } = req.query;
+
+    try {
+        const Disponibilite = req.connection.models.Disponibilite;
+
+        if (!Disponibilite) {
+            return res.status(500).json({ message: 'Disponibilite model is not available in the current connection.' });
+        }
+
+        // Filtrer directement dans la requête MongoDB
+        const disponibilites = await Disponibilite.find({
+            selectedDay: new Date(selectedDay).toDateString(),
+            decisions: 'accepted', // Ajout de la condition pour ne récupérer que les disponibilités acceptées
+        });
+
+        // Retourner une liste vide si aucune disponibilité n'est trouvée
+        res.status(200).json(disponibilites);
+    } catch (err) {
+        console.error('Erreur lors de la récupération des disponibilités acceptées par date:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getConfirmedDisponibilitesByDay = async (req, res) => {
+    const { selectedDay } = req.query; // Récupérer selectedDay depuis la requête
+    console.log("selectedDay :"+selectedDay);
+    
+    try {
+        // Charger dynamiquement le modèle Disponibilite
+        const Disponibilite = req.connection.models.Disponibilite;
+
+        if (!Disponibilite) {
+            return res.status(500).json({ message: 'Disponibilite model is not available in the current connection.' });
+        }
+
+        // Rechercher les disponibilités avec confirmation et présence "confirmed"
+        const disponibilites = await Disponibilite.find({
+            selectedDay: new Date(selectedDay).toDateString(),
+            confirmation: "confirmed",
+            presence: "confirmed"
+        });
+
+        // Retourner une liste vide si aucune disponibilité n'est trouvée
+        res.status(200).json(disponibilites);
+    } catch (err) {
+        console.error('Erreur lors de la récupération des disponibilités confirmées par date:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+};
 
 
+exports.getDisponibilitesAfterDate = async (req, res) => {
+    const { employeeId, selectedDate } = req.params;
 
+    try {
+        // Validation des paramètres
+        if (!employeeId || !selectedDate) {
+            return res.status(400).json({
+                message: 'Employee ID and selected date are required.',
+            });
+        }
+
+        // Charger dynamiquement le modèle Disponibilite
+        const Disponibilite = req.connection.models.Disponibilite;
+
+        if (!Disponibilite) {
+            return res.status(500).json({
+                message: 'Disponibilite model is not available in the current connection.',
+            });
+        }
+
+        // Convertir la date de requête en objet Date
+        const formattedDate = new Date(selectedDate);
+
+        if (isNaN(formattedDate.getTime())) {
+            return res.status(400).json({
+                message: 'Invalid date format.',
+            });
+        }
+
+        // Récupérer les disponibilités
+        const disponibilites = await Disponibilite.find({ employeeId });
+
+        // Filtrer les disponibilités en comparant les dates
+        const disponibilitesFiltrees = disponibilites.filter((dispo) => {
+            const dispoDate = new Date(dispo.selectedDay); // Convertir `selectedDay` en objet Date
+            return dispoDate > formattedDate; // Comparer les dates
+        });
+
+        // Trier les résultats par date croissante
+        disponibilitesFiltrees.sort((a, b) => new Date(a.selectedDay) - new Date(b.selectedDay));
+
+        res.status(200).json(disponibilitesFiltrees);
+    } catch (err) {
+        res.status(500).json({ error: 'An error occurred while fetching disponibilites.' });
+    }
+};
+
+// Ajouter ou mettre à jour l'attribut suspension pour une liste d'IDs de disponibilités
+exports.updateDisponibilitesSuspension = async (req, res) => {
+    const { disponibiliteIds, suspension } = req.body; // Liste des IDs de disponibilités et le statut de suspension (true/false)
+    console.log("disponibiliteIds :"+disponibiliteIds);
+    console.log("suspension :"+suspension);
+    
+
+    try {
+        // Charger dynamiquement le modèle Disponibilite
+        const Disponibilite = req.connection.models.Disponibilite;
+
+        if (!Disponibilite) {
+            return res.status(500).json({ message: 'Disponibilite model is not available in the current connection.' });
+        }
+
+        // Vérifier que les IDs sont valides
+        if (!Array.isArray(disponibiliteIds) || typeof suspension !== 'boolean') {
+            return res.status(400).json({ message: 'Invalid request format. Expecting an array of IDs and a boolean suspension value.' });
+        }
+
+        // Mettre à jour les disponibilités en parallèle
+        const updatePromises = disponibiliteIds.map((id) => {
+            return Disponibilite.findByIdAndUpdate(
+                id,
+                { suspension },
+                { new: true, runValidators: true }
+            );
+        });
+
+        // Attendre la résolution de toutes les promesses
+        const updatedDisponibilites = await Promise.all(updatePromises);
+
+        // Filtrer les disponibilités non trouvées
+        const notFound = updatedDisponibilites.filter(dispo => !dispo);
+
+        res.status(200).json({
+            message: `${updatedDisponibilites.length - notFound.length} disponibilites updated successfully.`,
+            updatedDisponibilites,
+            notFound: notFound.map((_, index) => disponibiliteIds[index]) // Retourner les IDs non trouvés
+        });
+    } catch (err) {
+        console.error('Error updating disponibilites suspension:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+};
 

@@ -1,5 +1,6 @@
 // models/VanAssignment.js
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const VanAssignmentSchema =new mongoose.Schema({
     employeeId: {
@@ -13,7 +14,8 @@ const VanAssignmentSchema =new mongoose.Schema({
     date: {
         type: String,
         required: true
-    }
+    },
+    statusId :{type:String}
 });
 
 module.exports = VanAssignmentSchema;

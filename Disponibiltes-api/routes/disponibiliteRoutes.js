@@ -47,4 +47,17 @@ router.get('/disponibilites/employee/:employeeId/day/:selectedDay', disponibilit
 // Mettre à jour la présence d'une disponibilité par ID
 router.put('/disponibilites/:id/presence', disponibiliteController.updateDisponibilitePresenceById);
 
+router.get('/byDate', disponibiliteController.getDisponibilitesByDate);
+
+// Route pour récupérer les disponibilités confirmées d'une journée donnée
+router.get('/presence/confirmed-by-day', disponibiliteController.getConfirmedDisponibilitesByDay);
+
+// Récupérer les disponibilités d'un employé après une date donnée
+router.get('/disponibilites/employee/:employeeId/after/:selectedDate', disponibiliteController.getDisponibilitesAfterDate);
+
+// Mettre à jour la suspension pour une liste d'IDs de disponibilités
+router.post('/disponibilites/suspension', disponibiliteController.updateDisponibilitesSuspension);
+
+
+
 module.exports = router;
