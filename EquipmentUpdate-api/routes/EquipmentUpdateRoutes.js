@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const dbMiddlewareEquipmentUpdate = require('../midleware/dbMiddlewareEquipmentUpdate'); // Import du middleware
-const equipmentUpdateController = require('../controllers/equipmentUpdateController');
+const equipmentUpdateController = require('../controllers/EquipmentUpdateController');
 
 const router = express.Router();
 
