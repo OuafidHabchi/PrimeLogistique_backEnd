@@ -69,13 +69,6 @@ router.get(
 
 router.post(
   "/wornings/bulk",
-  upload.array("photos"),
-  (req, res, next) => {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "Au moins une photo est requise." });
-    }
-    next();
-  },
   dbMiddlewareWorning,
   worningController.createMultipleWarnings
 );
