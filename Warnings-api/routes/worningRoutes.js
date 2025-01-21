@@ -2,14 +2,17 @@ const express = require("express");
 const multer = require("multer");
 const worningController = require("../controllers/worningController");
 const logger = require('../../utils/logger');
-const dbMiddlewareWorning = require('../midleware/dbMiddlewareWorning'); // Middleware personnalisé
+const dbMiddlewareWorning = require('../midleware/dbMiddlewareWorning');
 const path = require('path');
 const fs = require('fs');
+
+const router = express.Router();
 
 // Configuration de multer
 const uploadDirectory = path.join(__dirname, '../uploads-wornings');
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
+  console.log(`Dossier des uploads créé : ${uploadDirectory}`);
 }
 
 const storage = multer.diskStorage({
@@ -19,63 +22,74 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const router = express.Router();
+// Middleware pour loguer les requêtes
+router.use((req, res, next) => {
+  logger.info(`Requête reçue : ${req.method} ${req.url}`);
+  next();
+});
 
 // Routes pour les warnings
 router.get("/wornings", dbMiddlewareWorning, worningController.getAllWornings);
+
 router.get("/wornings/:id", dbMiddlewareWorning, worningController.getWorningById);
 
-// Route POST : upload d'abord, puis middleware et contrôleur
 router.post(
   "/wornings",
-  upload.single("photo"), // Enregistrement du fichier avant d'exécuter les autres middlewares
-  dbMiddlewareWorning, // Middleware personnalisé pour ajouter le modèle
-  worningController.createWorning // Contrôleur pour traiter les données
+  upload.single("photo"),
+  (req, res, next) => {
+    if (!req.file) {
+      return res.status(400).json({ message: "Photo requise pour créer un warning." });
+    }
+    next();
+  },
+  dbMiddlewareWorning,
+  worningController.createWorning
 );
 
-// Route PUT : upload d'abord, puis middleware et contrôleur
 router.put(
   "/wornings/:id",
   upload.single("photo"),
+  (req, res, next) => {
+    if (!req.file) {
+      console.log("Aucune photo mise à jour pour ce warning.");
+    }
+    next();
+  },
   dbMiddlewareWorning,
   worningController.updateWorning
 );
 
-// Route DELETE : pas d'upload nécessaire
-router.delete(
-  "/wornings/:id",
-  dbMiddlewareWorning,
-  worningController.deleteWorning
-);
+router.delete("/wornings/:id", dbMiddlewareWorning, worningController.deleteWorning);
 
-// Route GET : warnings par employé
 router.get(
   "/wornings/employe/:employeID",
   dbMiddlewareWorning,
   worningController.getWorningsByEmployeID
 );
 
-// Route POST pour créer plusieurs warnings
 router.post(
   "/wornings/bulk",
   upload.array("photos"),
+  (req, res, next) => {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "Au moins une photo est requise." });
+    }
+    next();
+  },
   dbMiddlewareWorning,
   worningController.createMultipleWarnings
 );
 
-// Route pour vérifier les suspensions des employés
 router.post(
   "/wornings/suspensions/check",
   dbMiddlewareWorning,
   worningController.checkSuspensionsForEmployees
 );
 
-// Route GET : warnings with template === true
 router.get(
-  "/wornings/templates/get", // Define the route endpoint
-  dbMiddlewareWorning, // Middleware to add the model
-  worningController.getTemplateWarnings // Controller function to handle the request
+  "/wornings/templates/get",
+  dbMiddlewareWorning,
+  worningController.getTemplateWarnings
 );
-
 
 module.exports = router;

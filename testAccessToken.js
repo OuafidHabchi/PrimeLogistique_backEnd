@@ -18,5 +18,5 @@ async function sendExpoPushNotification(expoPushToken) {
 }
 
 // Exemple d'appel avec un token Expo valide
-const expoPushToken = 'ExponentPushToken[PHAkIWDHicVm_CGwEZpQFv]'; // Remplacez par un vrai token Expo
+const expoPushToken = 'ExponentPushToken[Gu20oAI2dJg6Mp78Ttkpmr]'; // Remplacez par un vrai token Expo
 sendExpoPushNotification(expoPushToken);
